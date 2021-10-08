@@ -1,8 +1,7 @@
 import logging
 from typing import Optional
 
-from fastapi import Depends, Query
-from fastapi_utils.cbv import cbv
+from fastapi import Query
 from injector import inject
 
 from isar.models.mission import Mission

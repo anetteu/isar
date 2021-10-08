@@ -22,9 +22,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "fastapi"
-        "fastapi_utilis"
-        "uvicorn"
+        "fastapi",
+        "uvicorn",
         "PyJWT",
         "PyYAML",
         "Werkzeug",

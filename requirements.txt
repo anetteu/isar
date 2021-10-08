@@ -1,6 +1,5 @@
 uvicorn
 fastapi
-fastapi_utils
 PyJWT
 PyYAML
 Werkzeug < 2.0.0

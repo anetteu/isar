@@ -6,6 +6,7 @@ from threading import Thread
 import yaml
 from fastapi import FastAPI
 from injector import Injector
+from uvicorn.logging import ColourizedFormatter
 
 from isar.apis.schedule.router import create_scheduler_router
 from isar.config import config
@@ -30,22 +31,40 @@ from .modules import (
 
 def create_app(test_config=False):
 
-    tags_metadata = [
-    {
-        "name": "Scheduler",
-        "description": "Mission functionality",
-    }
-]
-    logging.config.dictConfig(yaml.safe_load(open(f"./src/isar/config/logging.conf")))
+
+
+    log_config = yaml.safe_load(open(f"./src/isar/config/logging.conf"))
+    log_handler = logging.StreamHandler()
+    log_handler.setLevel('DEBUG')
+    log_handler.setFormatter(
+            ColourizedFormatter(
+                '{asctime} - {levelprefix:<8} - {name} - {message}',
+                style="{",
+                use_colors=True
+            )
+        )
+
+    logging.config.dictConfig(log_config)
     logging.getLogger("azure.core.pipeline.policies.http_logging_policy").setLevel(
         config.get("logging", "azure_storage_logging_level")
     )
     logging.getLogger("transitions.core").setLevel(
         config.get("logging", "transitions_core_logging_level")
     )
+    for loggers in log_config["loggers"].keys():
+        logging.getLogger(loggers).addHandler(log_handler)
+    logging.getLogger().addHandler(log_handler)
+
+
+    tags_metadata = [
+        {
+            "name": "Scheduler",
+            "description": "Mission functionality",
+        }
+    ]
 
     app = FastAPI(openapi_tags=tags_metadata)
-    
+
     injector = Injector(
         [
             APIModule,

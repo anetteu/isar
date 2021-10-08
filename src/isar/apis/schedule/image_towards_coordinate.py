@@ -1,8 +1,7 @@
 import logging
 from typing import Optional
 
-from fastapi import Depends, Query
-from fastapi_utils.cbv import cbv
+from fastapi import Query
 
 from isar.models.mission import Mission
 from isar.services.utilities.scheduling_utilities import SchedulingUtilities
