@@ -95,7 +95,7 @@ class InitiateTask(State):
                 initiate_task_success = False
 
             if initiate_task_success:
-                self.state_machine.current_task.status = TaskStatus.Scheduled
+                self.state_machine.current_task.status = TaskStatus.InProgress
                 next_state = States.Monitor
                 self.logger.info(
                     f"Successfully initiated {type(self.state_machine.current_task).__name__} "
